@@ -24,7 +24,6 @@ public class TaskDAO {
     }
 
     public Task addTaskOrUpdateIfExist(Task task) {
-        //        Task task = mapper.readValue(json, Task.class);
         if (task.getId() == null) {
             task.setId(autoID.getAndIncrement());
             taskMap.put(task.getId(), task);
@@ -33,7 +32,7 @@ public class TaskDAO {
             if (taskMap.containsKey(id)) {
                 taskMap.put(id, task);
             } else {
-                throw new IllegalArgumentException("Unknown id" + task.getId());
+                throw new IllegalArgumentException("Unknown id " + task.getId());
             }
         }
         return task;
