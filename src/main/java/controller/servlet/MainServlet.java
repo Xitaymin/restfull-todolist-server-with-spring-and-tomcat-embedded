@@ -8,7 +8,7 @@ import model.dao.TaskDAO;
 import model.entity.Task;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import spring.ToDoConfig;
+import spring.ContextConfiguration;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,17 +19,11 @@ import java.util.Collection;
 
 @WebServlet(name = "MainServlet", urlPatterns = {"/todo"})
 public class MainServlet extends HttpServlet {
-    private TaskDAO taskDAO;
-    private ObjectMapper mapper;
-
-    @Override
-    public void init() {
-        ApplicationContext context =
-                new AnnotationConfigApplicationContext(ToDoConfig.class);
-        taskDAO = context.getBean(TaskDAO.class);
-        mapper = context.getBean(ObjectMapper.class);
-        mapper.enable(SerializationFeature.INDENT_OUTPUT).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    }
+    private final ApplicationContext context =
+            new AnnotationConfigApplicationContext(ContextConfiguration.class);
+    private final TaskDAO taskDAO = context.getBean(TaskDAO.class);
+    private final ObjectMapper mapper =
+            context.getBean(ObjectMapper.class).enable(SerializationFeature.INDENT_OUTPUT).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
@@ -63,7 +57,8 @@ public class MainServlet extends HttpServlet {
         } else if (taskDAO.deleteById(Integer.valueOf(id))) {
             resp.setStatus(HttpServletResponse.SC_OK);
         } else {
-            sendResponse(resp, "Unknown id", HttpServletResponse.SC_NOT_FOUND);
+            sendResponse(resp, "Unknown id " + id,
+                         HttpServletResponse.SC_NOT_FOUND);
         }
     }
 

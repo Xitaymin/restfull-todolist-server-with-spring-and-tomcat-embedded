@@ -3,13 +3,17 @@ package model.dao;
 import model.entity.Task;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TaskDAO {
-    private final AtomicInteger autoID = new AtomicInteger(1);
-    private final Map<Integer, Task> taskMap = new HashMap<>();
+    private final AtomicInteger autoID;
+    private final Map<Integer, Task> taskMap;
+
+    public TaskDAO(AtomicInteger autoID, Map<Integer, Task> taskMap) {
+        this.autoID = autoID;
+        this.taskMap = taskMap;
+    }
 
     public Collection<Task> getAllTasks() {
         return taskMap.values();
