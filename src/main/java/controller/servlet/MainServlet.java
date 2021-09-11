@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import model.dao.TaskDAO;
 import model.entity.Task;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import spring.ToDoConfig;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,9 +19,17 @@ import java.util.Collection;
 
 @WebServlet(name = "MainServlet", urlPatterns = {"/todo"})
 public class MainServlet extends HttpServlet {
-    private final TaskDAO taskDAO = new TaskDAO();
-    private final ObjectMapper mapper =
-            new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    private TaskDAO taskDAO;
+    private ObjectMapper mapper;
+
+    @Override
+    public void init() {
+        ApplicationContext context =
+                new AnnotationConfigApplicationContext(ToDoConfig.class);
+        taskDAO = context.getBean(TaskDAO.class);
+        mapper = context.getBean(ObjectMapper.class);
+        mapper.enable(SerializationFeature.INDENT_OUTPUT).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {

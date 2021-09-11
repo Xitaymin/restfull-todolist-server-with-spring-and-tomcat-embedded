@@ -9,6 +9,7 @@
   <url>http://maven.apache.org</url>
   <properties>
     <tomcat.version>8.5.38</tomcat.version>
+      <spring.version>3.2.13.RELEASE</spring.version>
   </properties>
   <dependencies>
       <dependency>
@@ -51,6 +52,12 @@
           <groupId>com.fasterxml.jackson.core</groupId>
           <artifactId>jackson-databind</artifactId>
           <version>2.12.3</version>
+      </dependency>
+
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-context</artifactId>
+          <version>${spring.version}</version>
       </dependency>
 
   </dependencies>
