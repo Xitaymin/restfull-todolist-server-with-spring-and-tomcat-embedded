@@ -1,8 +1,5 @@
 package model.dao;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import model.entity.Task;
 
 import java.util.Collection;
@@ -11,14 +8,8 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TaskDAO {
-    private final AtomicInteger count = new AtomicInteger(1);
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final AtomicInteger autoID = new AtomicInteger(1);
     private final Map<Integer, Task> taskMap = new HashMap<>();
-
-    public TaskDAO() {
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
-                         false);
-    }
 
     public Collection<Task> getAllTasks() {
         return taskMap.values();
@@ -32,13 +23,18 @@ public class TaskDAO {
         taskMap.clear();
     }
 
-    public Task createTaskOrUpdateIfExist(String json) throws JsonProcessingException {
-        Task task = mapper.readValue(json, Task.class);
-        if (task.getId() == 0) {
-            task.setId(count.getAndIncrement());
+    public Task addTaskOrUpdateIfExist(Task task) {
+        //        Task task = mapper.readValue(json, Task.class);
+        if (task.getId() == null) {
+            task.setId(autoID.getAndIncrement());
             taskMap.put(task.getId(), task);
         } else {
-            taskMap.replace(task.getId(), task);
+            Integer id = task.getId();
+            if (taskMap.containsKey(id)) {
+                taskMap.put(id, task);
+            } else {
+                throw new IllegalArgumentException("Unknown id" + task.getId());
+            }
         }
         return task;
     }
