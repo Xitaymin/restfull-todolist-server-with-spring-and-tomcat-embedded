@@ -2,7 +2,10 @@ package spring;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.dao.TaskDAO;
+import model.dao.impl.SimpleTaskDAO;
 import model.entity.Task;
+import model.service.TaskService;
+import model.service.impl.SimpleTaskService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,8 +17,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ContextConfiguration {
 
     @Bean
-    public TaskDAO taskDao() {
-        return new TaskDAO(atomicInteger(), hashMap());
+    public TaskService simpleTaskService() {
+        return new SimpleTaskService(simpleTaskDao());
+    }
+
+    @Bean
+    public TaskDAO simpleTaskDao() {
+        return new SimpleTaskDAO(atomicInteger(), hashMap());
     }
 
     @Bean

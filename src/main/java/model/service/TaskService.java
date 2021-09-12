@@ -1,15 +1,15 @@
-package model.dao;
+package model.service;
 
 import model.entity.Task;
 
 import java.util.Collection;
 
-public interface TaskDAO {
+public interface TaskService {
     Collection<Task> getAllTasks();
 
     Task addTaskOrUpdateIfExist(Task requested);
 
     void deleteAll();
 
-    boolean deleteById(Integer id);
+    boolean deleteById(Integer valueOf);
 }
