@@ -6,11 +6,11 @@ import model.service.TaskService;
 
 import java.util.Collection;
 
-public class SimpleTaskService implements TaskService {
+public class DefaultTaskService implements TaskService {
 
     private final TaskDAO taskDAO;
 
-    public SimpleTaskService(TaskDAO taskDAO) {
+    public DefaultTaskService(TaskDAO taskDAO) {
         this.taskDAO = taskDAO;
     }
 

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import model.entity.Task;
 import model.service.TaskService;
-import model.service.impl.SimpleTaskService;
+import model.service.impl.DefaultTaskService;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import spring.ContextConfiguration;
@@ -28,7 +28,7 @@ public class MainServlet extends HttpServlet {
     public void init() {
         context =
                 new AnnotationConfigApplicationContext(ContextConfiguration.class);
-        taskService = context.getBean(SimpleTaskService.class);
+        taskService = context.getBean(DefaultTaskService.class);
         mapper =
                 context.getBean(ObjectMapper.class).enable(SerializationFeature.INDENT_OUTPUT).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }

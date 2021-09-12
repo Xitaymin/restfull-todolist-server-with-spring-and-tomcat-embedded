@@ -7,11 +7,11 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class SimpleTaskDAO implements TaskDAO {
+public class InMemoryTaskDAO implements TaskDAO {
     private final AtomicInteger autoID;
     private final Map<Integer, Task> taskMap;
 
-    public SimpleTaskDAO(AtomicInteger autoID, Map<Integer, Task> taskMap) {
+    public InMemoryTaskDAO(AtomicInteger autoID, Map<Integer, Task> taskMap) {
         this.autoID = autoID;
         this.taskMap = taskMap;
     }
